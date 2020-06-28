@@ -30,7 +30,7 @@ class App extends Component {
       );
   };
 
-  //Toggle Completed
+  //Toggle Completed To One
 
   markComplete = (id) => {
     this.setState({
@@ -43,19 +43,36 @@ class App extends Component {
     });
   };
 
+  //Toggle Completed To All
+
+  checkAll = () => {
+    const { todos } = this.state;
+    const checkCompleted = todos.every((todo) => todo.completed === true);
+    this.setState({
+      todos: this.state.todos.map((todo) => {
+        checkCompleted ? (todo.completed = false) : (todo.completed = true);
+        return todo;
+      }),
+    });
+  };
+
   //Add Todo
 
   addTodo = (title) => {
-    axios
-      .post("https://jsonplaceholder.typicode.com/todos", {
-        title,
-        completed: false,
-      })
-      .then((res) =>
-        this.setState({
-          todos: [...this.state.todos, res.data],
+    if (title) {
+      axios
+        .post("https://jsonplaceholder.typicode.com/todos", {
+          title,
+          completed: false,
         })
-      );
+        .then((res) =>
+          this.setState({
+            todos: [...this.state.todos, res.data],
+          })
+        );
+    } else {
+      alert("Todo can not be empty!");
+    }
   };
 
   render() {
@@ -69,7 +86,7 @@ class App extends Component {
               path="/"
               render={(props) => (
                 <React.Fragment>
-                  <AddTodo addTodo={this.addTodo} />
+                  <AddTodo addTodo={this.addTodo} checkAll={this.checkAll} />
                   <Todos
                     todos={this.state.todos}
                     markComplete={this.markComplete}

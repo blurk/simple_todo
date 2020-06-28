@@ -32,6 +32,17 @@ a {
 }
 
 input[type*="checkbox"] {
-  visibility: hidden;
-  z-index: -9999;
+  position: absolute;
+  top: -9999px;
+}
+
+#label-check-all {
+  text-align: center;
+  padding: 10px;
+  color: #111;
+  font-weight: 600;
+}
+
+input#check-all:checked ~ #label-check-all {
+  color: #666;
 }
